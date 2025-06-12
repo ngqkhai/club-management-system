@@ -1,0 +1,93 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Service-specific ignores
+services/*/logs/
+services/*/node_modules/
+services/*/dist/
+services/*/build/
+services/*/.env
+services/*/.env.*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Debug
+.debug/
+
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Documentation
+docs/_build/
+site/
+
+# Misc
+.tmp/
+.temp/
+.cache/ 
