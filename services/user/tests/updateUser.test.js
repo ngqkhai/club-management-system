@@ -4,7 +4,6 @@ const app = require('../src/index');
 const sequelize = require('../src/config/database');
 const User = require('../src/models/user');
 
-// Mock JWT token
 const mockUser = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   email: 'test@example.com',
@@ -12,19 +11,27 @@ const mockUser = {
 const mockToken = jwt.sign(mockUser, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 beforeAll(async () => {
-  // Reset database and seed test user
-  await sequelize.sync({ force: true });
+  await sequelize.authenticate();
+});
+
+beforeEach(async () => {
+  await User.destroy({ where: {}, truncate: true });
+
   await User.create({
-    id: '550e8400-e29b-41d4-a716-446655440000',
+    id: mockUser.id,
     full_name: 'Nguyen Van A',
     phone: '0908888888',
-    email: 'test@example.com',
+    email: mockUser.email,
     avatar_url: null,
+    created_at: new Date(),
+    updated_at: new Date(),
   });
 });
 
 afterAll(async () => {
-  await sequelize.close();
+  if (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === '1') {
+    await sequelize.close();
+  }
 });
 
 describe('PUT /api/users/me', () => {
@@ -43,7 +50,7 @@ describe('PUT /api/users/me', () => {
       message: 'Cập nhật thông tin thành công',
     });
 
-    const user = await User.findByPk('550e8400-e29b-41d4-a716-446655440000');
+    const user = await User.findByPk(mockUser.id);
     expect(user.full_name).toBe('Nguyen Van B');
     expect(user.phone).toBe('0909999999');
     expect(user.avatar_url).toBe('https://cdn.app.com/avatar123.jpg');
@@ -66,7 +73,7 @@ describe('PUT /api/users/me', () => {
       .put('/api/users/me')
       .set('Authorization', `Bearer ${mockToken}`)
       .send({
-        phone: 'invalid', // Invalid phone format
+        phone: 'invalid',
       });
 
     expect(response.status).toBe(400);
